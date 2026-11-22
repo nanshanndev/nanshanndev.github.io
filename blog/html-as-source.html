@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="nanshann — 以 Agent 为第一用户的浏览器 UI 框架。HTML、CSS 与 Behavior，无需应用构建。">
+  <meta name="theme-color" content="#f8fafc">
+  <title>为什么选择 HTML 作为共同来源 | nanshann</title>
+  <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+  <script src="/assets/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/fonts.css">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script type="importmap">{"imports":{"nanshann":"/runtime/index.js","site/":"/behaviors/","site-content/":"/content/","site-assets/":"/assets/"}}</script>
+  <script type="module" src="/assets/app.js"></script>
+</head>
+<body>
+  <ns-route path="/" src="/components/shell.html" data-site-root></ns-route>
+  <p id="site-failure" class="failure" role="alert" hidden></p>
+  <noscript><p class="failure">此站点使用 nanshann，需要 JavaScript。This site runs on nanshann and requires JavaScript. <a href="https://github.com/nanshanndev/nanshann/tree/master/docs">Read the documentation on GitHub.</a></p></noscript>
+</body>
+</html>

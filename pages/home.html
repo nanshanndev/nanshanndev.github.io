@@ -1,0 +1,205 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, .mono, .eyebrow, .tag, kbd { font-family: var(--mono); }
+.wrap { width: min(100% - 64px, 1216px); margin-inline: auto; }
+.muted { color: var(--muted); }
+.accent { color: var(--accent); }
+.eyebrow { font-size: 12px; letter-spacing: .09em; color: var(--accent); text-transform: uppercase; line-height: 1.6; }
+.tag { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 5px; background: var(--accent-soft); color: var(--accent); font-size: 11px; padding: 3px 9px; white-space: nowrap; }
+.dot { display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 11px 24px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500; line-height: 1.5; }
+.button:hover { border-color: var(--accent); color: var(--accent); }
+.button.primary { background: linear-gradient(100deg, #1d4ed8, #2563eb); border-color: #2563eb; color: white; box-shadow: 0 3px 10px #2563eb24; }
+:host-context([data-theme='dark']) .button.primary { background: #3b82f6; border-color: #60a5fa70; }
+.button.primary:hover { background: #1d4ed8; box-shadow: 0 5px 22px #2563eb35; }
+.actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+.hero { position: relative; text-align: center; padding: 76px 24px 64px; isolation: isolate; }
+.hero::before { content: ''; position: absolute; inset: 0 calc((100% - 100vw) / 2) -70px; z-index: -1; background: radial-gradient(ellipse at 50% 0%, var(--wash), transparent 65%); pointer-events: none; }
+.home { background-image: radial-gradient(var(--grid) .8px, transparent .8px); background-size: 24px 24px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 9px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); font: 10px/1.6 var(--mono); letter-spacing: .06em; color: var(--muted); margin-bottom: 28px; }
+.hero-badge .dot { width: 5px; height: 5px; }
+.hero h1 { font-size: clamp(38px, 5.6vw, 72px); max-width: 1060px; margin: auto; letter-spacing: -.045em; line-height: 1.14; font-weight: 700; }
+.hero h1 span { display: block; color: #2563eb; background: linear-gradient(100deg, #1d4ed8, #2563eb, #4f46e5); background-clip: text; -webkit-text-fill-color: transparent; }
+:host-context([data-theme='dark']) .hero h1 span { background-image: linear-gradient(100deg, #60a5fa, #a5b4fc, #bfdbfe); }
+.hero p { max-width: 765px; margin: 26px auto 0; font-size: 18px; line-height: 1.75; color: var(--text); }
+.hero .actions { justify-content: center; margin-top: 32px; }
+.command { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: min(100%, 448px); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; margin: 24px auto 0; text-align: left; }
+.command code { min-width: 0; overflow: auto; font-size: 12px; white-space: nowrap; }
+.copy { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; font: 11px/1.4 var(--mono); white-space: nowrap; }
+.copy svg { width: 13px; height: 13px; }
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); max-width: 896px; margin: 42px auto 0; padding: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; text-align: left; }
+.facts div { display: flex; gap: 10px; padding: 8px 12px; align-items: center; font: 12px/1.7 var(--mono); }
+.facts div + div { border-left: 1px solid var(--line); }
+.section { padding-block: 64px; }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-bottom: 26px; }
+.section-heading > div { flex: 1.3; }
+.section-heading p { max-width: 440px; flex: 1; font-size: 14px; line-height: 1.8; }
+.section-heading h2 { margin-top: 6px; }
+.workbench { border-radius: 14px; border: 1px solid var(--strong-line); overflow: hidden; background: var(--surface); box-shadow: var(--shadow); }
+.workbench-bar { padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; background: var(--soft); border-bottom: 1px solid var(--line); font: 12px/1.5 var(--mono); }
+.window-label { display: flex; align-items: center; gap: 16px; }
+.window-dots { display: flex; gap: 6px; }
+.window-dots i { width: 10px; height: 10px; border-radius: 50%; background: #fb7185; }
+.window-dots i:nth-child(2) { background: #fbbf24; }
+.window-dots i:nth-child(3) { background: #34d399; }
+:host-context([data-theme='dark']) .window-dots i { background: #334155; }
+:host-context([data-theme='dark']) .window-dots i:last-child { background: #3b82f6; }
+.workbench-body { display: grid; grid-template-columns: 7fr 5fr; }
+.source-panel { padding: 24px; background: color-mix(in srgb, var(--soft) 50%, var(--surface)); }
+.runtime-panel { padding: 24px; border-left: 1px solid var(--line); }
+.panel-label { display: flex; justify-content: space-between; gap: 12px; align-items: center; font: 11px/1.6 var(--mono); color: var(--muted); margin-bottom: 16px; }
+.panel-label b { color: var(--text); font-weight: 500; }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+.code-window { border: 1px solid var(--line); background: var(--code); border-radius: 8px; padding: 18px; min-height: 390px; }
+.token-tag { color: var(--accent); }
+.token-string { color: var(--violet); }
+.token-comment { color: var(--muted); }
+.panel-note { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font: 10px/1.5 var(--mono); }
+.contracts { margin: 20px 0; padding: 0; font: 12px/1.7 var(--mono); }
+.contracts div { display: flex; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--line); padding: 10px 0; }
+.contracts dt { color: var(--muted); }
+.contracts dd { margin: 0; color: var(--accent); text-align: right; }
+.note { display: flex; align-items: start; gap: 10px; font-size: 12px; line-height: 1.8; border: 1px solid var(--line); border-radius: 7px; background: var(--accent-soft); padding: 13px; }
+.note svg { color: var(--accent); width: 17px; margin-top: 3px; }
+.principles { margin-top: 28px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+.principle { display: grid; grid-template-columns: 52px 1fr 1.7fr; gap: 18px; align-items: center; padding: 36px; }
+.principle + .principle { border-top: 1px solid var(--line); }
+.principle .number { color: var(--accent); font: 28px var(--mono); letter-spacing: -.08em; }
+.principle h3 { font-size: 18px; letter-spacing: -.025em; }
+.principle small { display: block; font: 10px var(--mono); letter-spacing: .06em; color: var(--muted); margin-top: 7px; }
+.principle p { font-size: 15px; line-height: 1.8; }
+:host-context([data-theme='dark']) .principle .number { color: var(--strong-line); }
+.gates { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.gate { display: block; padding: 26px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.gate:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.gate-icon { display: flex; align-items: center; justify-content: space-between; color: var(--muted); margin-bottom: 20px; }
+.gate-icon svg:last-child { width: 15px; }
+.gate h3 { font-size: 17px; }
+.gate p { font-size: 13px; line-height: 1.8; margin-top: 10px; }
+.gate .mono { font-size: 10px; color: var(--muted); margin-top: 22px; }
+:host-context([data-theme='dark']) .gate-icon svg:first-child { color: var(--accent); }
+.end-cta { margin-block: 24px 100px; padding: 60px 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); text-align: center; }
+.end-cta h2 { margin: 10px 0 14px; }
+.end-cta p { color: var(--muted); }
+.end-cta .actions { margin-top: 28px; justify-content: center; }
+@media (min-width: 1440px) {
+  .hero { padding-top: 90px; }
+}
+@media (max-width: 1100px) {
+  .gates { grid-template-columns: 1fr 1fr; }
+  .section-heading p { max-width: 360px; }
+}
+@media (max-width: 767px) {
+  .wrap { width: calc(100% - 40px); }
+  main { padding-top: 61px; }
+  .hero { padding: 54px 0 40px; }
+  .hero-badge { font-size: 8px; gap: 7px; margin-bottom: 24px; padding: 5px 8px; }
+  .hero h1 { font-size: clamp(33px, 7.5vw, 48px); letter-spacing: -.04em; line-height: 1.2; }
+  .hero p { font-size: 15px; margin-top: 22px; }
+  .hero .actions { margin-top: 26px; gap: 10px; }
+  .hero .button { padding: 11px 18px; font-size: 13px; }
+  .command { margin-top: 22px; }
+  .facts { margin-top: 28px; grid-template-columns: 1fr; padding: 8px 12px; }
+  .facts div { font-size: 11px; padding: 9px 4px; }
+  .facts div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .section { padding-block: 42px; }
+  .section-heading { display: block; margin-bottom: 23px; }
+  .section-heading p { margin-top: 16px; font-size: 14px; max-width: none; }
+  .section-heading h2 { font-size: 25px; line-height: 1.4; }
+  .workbench-body { grid-template-columns: 1fr; }
+  .workbench-bar { padding: 10px 12px; font-size: 10px; }
+  .workbench-bar > .tag { display: none; }
+  .source-panel, .runtime-panel { padding: 18px; }
+  .runtime-panel { border-left: 0; border-top: 1px solid var(--line); }
+  .code-window { min-height: 0; padding: 14px; }
+  .code-window pre { font-size: 12px; line-height: 1.85; }
+  .panel-label { font-size: 10px; }
+  .panel-note { font-size: 9px; }
+  .principle { grid-template-columns: 34px 1fr; padding: 26px 20px; gap: 12px; }
+  .principle p { grid-column: 2; font-size: 14px; }
+  .principle h3 { font-size: 17px; }
+  .principle .number { font-size: 25px; }
+  .principle small { font-size: 9px; }
+  .gates { grid-template-columns: 1fr; }
+  .gate { padding: 22px; }
+  .gate-icon { margin-bottom: 12px; }
+  .gate p { font-size: 14px; }
+  .gate .mono { display: none; }
+  .end-cta { margin: 12px auto 60px; padding: 40px 20px; }
+  .end-cta h2 { font-size: 27px; line-height: 1.4; }
+  .end-cta p { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+.hero p, .hero h1 { text-wrap: balance; }
+:host-context([lang="en"]) .hero h1 { max-width: 1024px; letter-spacing: -.025em; }
+.end-cta h2 { text-wrap: balance; }
+</style>
+<!-- Feather 4.29.2 icons, Copyright (c) 2013-2023 Cole Bemis (MIT). See /licenses/feather-MIT.txt and /assets/feather-icons.json. -->
+<div class="home">
+  <section class="hero wrap">
+    <div class="hero-badge"><span class="dot"></span> AGENT-FIRST RUNTIME · BROWSER NATIVE v0.1</div>
+    <h1>{{ state.copy.title }}<span>{{ state.copy.titleAccent }}</span></h1>
+    <p>{{ state.copy.description }}</p>
+    <div class="actions"><a class="button primary" ns-bind-href="state.links.docs">{{ state.t.getStarted }}<svg aria-hidden="true" viewBox="0 0 24 24" data-feather="arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a><a class="button" href="#philosophy">{{ state.t.philosophy }}</a></div>
+    <div class="command"><code><span class="accent">JS</span> <span id="entry-code">{{ state.command }}</span></code><button class="copy" type="button" data-copy="entry-code"><svg aria-hidden="true" viewBox="0 0 24 24" data-feather="copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>{{ state.t.copy }}</span></button></div>
+    <div class="facts"><div ns-foreach="item of state.facts" ns-key="item.id"><span class="dot"></span><span>{{ item.text }}</span></div></div>
+  </section>
+  <section class="section wrap" id="living-anatomy">
+    <div class="section-heading"><div><span class="eyebrow">LIVING ANATOMY · HTML & BEHAVIOR</span><h2>{{ state.copy.anatomy }}</h2></div><p>{{ state.copy.anatomyDescription }}</p></div>
+    <div class="workbench">
+      <div class="workbench-bar"><div class="window-label"><span class="window-dots"><i></i><i></i><i></i></span><span>counter.html</span><span class="muted">ESM Native</span></div><span class="tag"><span class="dot"></span>{{ state.t.ready }}</span></div>
+      <div class="workbench-body">
+        <div class="source-panel"><div class="panel-label"><b>{{ state.copy.source }}</b><button class="copy" type="button" data-copy="counter-code"><svg aria-hidden="true" viewBox="0 0 24 24" data-feather="copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span data-copy-label>{{ state.t.copy }}</span></button></div><div class="code-window"><pre><code id="counter-code" ns-html="state.highlighted"></code></pre></div><div class="panel-note"><span>HTML + CSS + Behavior</span><span class="accent">{{ state.copy.sourceNote }}</span></div></div>
+        <div class="runtime-panel"><div class="panel-label"><b><span class="dot"></span> {{ state.copy.live }}</b><span class="accent">state.count</span></div><site-counter ns-bind-locale="state.locale" label="STATE COUNTER"></site-counter><dl class="contracts"><div ns-foreach="item of state.contracts" ns-key="item.id"><dt>{{ item.name }}</dt><dd>{{ item.value }}</dd></div></dl><div class="note"><svg aria-hidden="true" viewBox="0 0 24 24" data-feather="zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>{{ state.copy.note }}</span></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="section wrap" id="philosophy"><div class="section-heading"><div><span class="eyebrow">PHILOSOPHY HORIZONS · ARCHITECTURAL FOUNDATION</span><h2>{{ state.copy.philosophyTitle }}</h2></div><span class="eyebrow muted">// 4 FOUNDATIONAL PILLARS</span></div><div class="principles"><div class="principle" ns-foreach="item of state.pillars" ns-key="item.id"><span class="number">{{ item.number }}</span><div><h3>{{ item.title }}</h3><small>{{ item.label }}</small></div><p>{{ item.description }}</p></div></div></section>
+  <section class="section wrap"><div class="section-heading"><div><span class="eyebrow">DESTINATION GATES</span><h2>{{ state.copy.gateTitle }}</h2></div></div><div class="gates"><a class="gate" ns-foreach="item of state.gates" ns-key="item.id" ns-bind-href="item.href"><div class="gate-icon"><svg aria-hidden="true" viewBox="0 0 24 24" ns-html="item.icon"></svg><svg aria-hidden="true" viewBox="0 0 24 24" data-feather="arrow-up-right"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div><h3>{{ item.title }}</h3><p>{{ item.description }}</p><div class="mono">MODULE: {{ item.module }}</div></a></div></section>
+  <section class="end-cta wrap"><span class="eyebrow">READY FOR AGENT-NATIVE WEB</span><h2>{{ state.copy.ctaTitle }}</h2><p>{{ state.copy.ctaDescription }}</p><div class="actions"><a class="button primary" ns-bind-href="state.links.docs">{{ state.copy.ctaButton }}</a><a class="button" ns-bind-href="state.repository" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24" data-feather="star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{{ state.copy.github }}</a></div></section>
+</div>
+<script ns-behavior type="module">
+  import { icons } from 'site-assets/icons.js';
+  import { homeCopy } from 'site-content/catalog.js';
+  import { localized, localize, highlight, pageReady } from 'site/util.js';
+  export default function home(ctx) {
+    pageReady(ctx);
+    const code = `<button ns-on-click="actions.decrement">−</button>\n<span>{{ state.count }}</span>\n<button ns-on-click="actions.increment">+</button>\n\n<script ns-behavior type="module">\n  import { createState } from 'nanshann';\n\n  export default function counter() {\n    const state = createState({ count: 42 });\n    return {\n      state,\n      actions: {\n        increment() { state.count++; },\n        decrement() { state.count--; }\n      }\n    };\n  }\n<\/script>`;
+    return { state: localize(ctx, base => {
+      const copy = homeCopy[base.locale];
+      return {
+      ...base, copy, code, highlighted: highlight(code),
+      command: "import 'nanshann';",
+      facts: copy.facts.map((text, id) => ({ id, text })),
+      contracts: copy.contractNames.map((name, id) => ({ id, name, value: copy.contractValues[id] })),
+      pillars: copy.pillars.map((item, index) => ({ id: index, number: String(index + 1).padStart(2, '0'), title: item[0], label: item[1], description: item[2] })),
+      gates: ['docs', 'components', 'blog', 'about'].map((key, index) => ({ id: key, href: base.links[key], title: base.t[key], description: copy.gateDescriptions[index], icon: icons[['book','blocks','code','flag'][index]], module: ['DOCS', 'ECOSYSTEM', 'DESIGN', 'ABOUT'][index] })),
+      };
+    }), actions: {} };
+  }
+  home.attributes = localized;
+</script>

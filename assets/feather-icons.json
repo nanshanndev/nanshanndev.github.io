@@ -1,0 +1,123 @@
+{
+  "project": "Feather",
+  "version": "4.29.2",
+  "license": "MIT",
+  "licenseFile": "../licenses/feather-MIT.txt",
+  "licenseBlob": "1f4f4336baff1185dc78ae9e78cac46628dcc869",
+  "source": "https://github.com/feathericons/feather/tree/v4.29.2",
+  "adaptation": "Original SVG child geometry; site-defined outer wrapper, stroke width, color and size.",
+  "icons": [
+    {
+      "alias": "arrow",
+      "name": "arrow-right",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/arrow-right.svg",
+      "gitBlob": "17f8a78c657bad54cd70bdbbf78332929f21dfbc",
+      "geometrySha256": "faeeacc887872b82d819077cd9502230835f0ba3474e98b53fc273bfd912dbae"
+    },
+    {
+      "alias": "external",
+      "name": "arrow-up-right",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/arrow-up-right.svg",
+      "gitBlob": "dcdc328325946ef301623aca90b554a853a8357a",
+      "geometrySha256": "ea1aeee06e03b3a76efcf70dd9e96ee3fda70d6f2cdf8bf3b5feb5ab0e5d1d20"
+    },
+    {
+      "alias": "chevron",
+      "name": "chevron-down",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/chevron-down.svg",
+      "gitBlob": "ae614b7c34da9d1da03301c55a45890748ed69e6",
+      "geometrySha256": "118ac017c94f76bcc7bfa0c88303b6d057a69e5c6451ba21a3f1e95ff029b9e7"
+    },
+    {
+      "alias": "menu",
+      "name": "menu",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/menu.svg",
+      "gitBlob": "f32c64bff94d1ae9098495125d4b231b061cdf6a",
+      "geometrySha256": "7e45f33f31357fe95faadeb6dc4eb49532498fa829298a7998d1b9c6a7031fdc"
+    },
+    {
+      "alias": "close",
+      "name": "x",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/x.svg",
+      "gitBlob": "d9213159926b1696e7b1e98ceb8f940ee58a0060",
+      "geometrySha256": "e93c0052192d4683946c921c6658cb7614dc037273b1a04b63ad753b9afa0723"
+    },
+    {
+      "alias": "search",
+      "name": "search",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/search.svg",
+      "gitBlob": "97881568bf9fea85f5c46c2d9a05c24d8c5e867e",
+      "geometrySha256": "bdbe383f9b54376f4fbce898ff58d5115ea94c751cd609c9d8e33a5d3c7e89c6"
+    },
+    {
+      "alias": "sun",
+      "name": "sun",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/sun.svg",
+      "gitBlob": "3589337892c48f79d2207db224b5b3869f545759",
+      "geometrySha256": "34f748f1459eee6ac258f39fd9469451c30fc47a33d06ddf13c0f022c640ad13"
+    },
+    {
+      "alias": "moon",
+      "name": "moon",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/moon.svg",
+      "gitBlob": "3249152828bd4cace3ce6757d6bd5378ff87bfa2",
+      "geometrySha256": "cd67fc0411aea144c2752211fa8535f071642d0a7d375c072faeb9106d01797f"
+    },
+    {
+      "alias": "copy",
+      "name": "copy",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/copy.svg",
+      "gitBlob": "e71142876fa0fc4d9c6048bc1396d5253501b2e9",
+      "geometrySha256": "0a31aa7bff6786b9542fa94b7a0b2076e41194c8277c32f840c656ce6399c8db"
+    },
+    {
+      "alias": "book",
+      "name": "book-open",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/book-open.svg",
+      "gitBlob": "4fe7fef9b2a5e75d180ea81302bfeee5e063910b",
+      "geometrySha256": "25ba31b57222ee4943296ca6b545c29a0dc452603f3be37a4d4e7b1b61381b12"
+    },
+    {
+      "alias": "blocks",
+      "name": "grid",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/grid.svg",
+      "gitBlob": "c83cfa524221f03cbdf8b2ae7f3af52a79b43b4a",
+      "geometrySha256": "5e4c31351d98a8c855629946c72c7495a5e80a2990b1bfc4082777a11706b9df"
+    },
+    {
+      "alias": "code",
+      "name": "code",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/code.svg",
+      "gitBlob": "a793ffc7436ddaf462a466036822e985970b9949",
+      "geometrySha256": "097c9653923325e99ffe94226e9f566d58f5f578e715de8a54ddfe24e8828831"
+    },
+    {
+      "alias": "flag",
+      "name": "flag",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/flag.svg",
+      "gitBlob": "cf6d3263c3b375e3fae7b220d671d440cb0022c9",
+      "geometrySha256": "22a6d5961db62abbdc63d9688bb1488804ef5327bebc4fe4e8bd25fdc7c36553"
+    },
+    {
+      "alias": "spark",
+      "name": "zap",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/zap.svg",
+      "gitBlob": "e6e6f2bf1e7ce8120a93b9d67b1aec4c43cd2af0",
+      "geometrySha256": "fdb16e5a67344b5f9cf2dcf5163beb09354ef164ef1a01683d23fd76bce81c17"
+    },
+    {
+      "alias": "star",
+      "name": "star",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/star.svg",
+      "gitBlob": "a64c645ecf005daf3ecdd40851de0829e865a0f4",
+      "geometrySha256": "c7f2eb67ebbeb0347163cc1c0792a860cec4b1d70333278ed05e2a51536fffaf"
+    },
+    {
+      "alias": "github",
+      "name": "github",
+      "source": "https://github.com/feathericons/feather/blob/v4.29.2/icons/github.svg",
+      "gitBlob": "c1aabb5543441a802ea64342dfc02a0116f863b6",
+      "geometrySha256": "ed0284c446e7ee36d34b98d4f7d377c8106c08240c473f2082d3a5d78f96a2d4"
+    }
+  ]
+}

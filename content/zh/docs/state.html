@@ -1,0 +1,70 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, kbd { font-family: var(--mono); }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+.copy { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; font: 11px/1.4 var(--mono); white-space: nowrap; }
+.copy svg { width: 13px; height: 13px; }
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+.prose { color: var(--text); max-width: 100%; font-size: 16px; line-height: 1.85; }
+.prose h2 { margin: 42px 0 18px; font-size: 25px; scroll-margin-top: 100px; }
+.prose h3 { margin: 30px 0 14px; font-size: 20px; }
+.prose p { margin: 16px 0; }
+.prose ul, .prose ol { padding-left: 24px; margin: 20px 0; }
+.prose li { margin: 8px 0; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+.prose code:not(pre code) { font-size: .85em; padding: 2px 5px; background: var(--soft); border-radius: 4px; color: var(--accent); overflow-wrap: anywhere; }
+.prose pre { padding: 22px; margin: 20px 0; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; font-size: 13px; line-height: 1.8; }
+.prose aside { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 22px; margin: 24px 0; font-size: 14px; }
+.prose table { width: 100%; border-collapse: collapse; margin-block: 24px; font-size: 14px; }
+.prose th, .prose td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); }
+.prose th { color: var(--ink); background: var(--soft); font-weight: 500; }
+.prose blockquote { margin: 24px 0; padding: 10px 24px; border-left: 3px solid var(--accent); color: var(--ink); font-size: 22px; }
+@media (max-width: 767px) {
+  main { padding-top: 61px; }
+  .prose { font-size: 15px; }
+  .prose pre { font-size: 12px; padding: 16px; }
+  .prose h2 { font-size: 23px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+<div class="prose">
+<p>createState 通过普通属性读写管理对象和数组。Signal 管理单个值与派生计算，两者使用同一套响应式机制。</p><h2 id="create-state">创建与更新</h2><div style="text-align:right"><button class="copy" type="button" data-copy="state-code">复制</button></div><pre><code id="state-code">import { createState, Signal, batch } from 'nanshann';
+const state = createState({ price: 100, quantity: 2 });
+const total = new Signal.Computed(() =&gt; state.price * state.quantity);
+const stop = total.subscribe(value =&gt; console.log(value));
+
+batch(() =&gt; {
+  state.price = 80;
+  state.quantity = 3;
+});
+stop();</code></pre><p>读取建立相应依赖，写入通知受影响的订阅。batch 合并同步更新；订阅建立时会立即回调当前值。独立订阅返回释放函数，需要自行调用。</p><h2 id="signal">单值与派生</h2><div style="text-align:right"><button class="copy" type="button" data-copy="signal-code">复制</button></div><pre><code id="signal-code">const count = new Signal.State(0);
+const doubled = new Signal.Computed(() =&gt; count.get() * 2);
+count.update(value =&gt; value + 1);
+doubled.get(); // 2</code></pre><p>Computed 是惰性、缓存的只读派生值，函数应同步且无副作用。Signal 对象使用 Object.is 比较；对象内部变化需要替换引用，或使用 createState 管理深层字段。</p><h2 id="ownership">所有权与模板</h2><p>每个组件的局部状态在 Behavior 函数内部创建。外部传入的复杂 property 保留引用，组件不应修改调用方数据。</p><p>模板不会自动解包放在 state 中的 Signal。可以通过普通 state 对象的 getter 调用 <code>.get()</code>，让绑定追踪读取：</p><div style="text-align:right"><button class="copy" type="button" data-copy="getter-code">复制</button></div><pre><code id="getter-code">return {
+  state: { get count() { return count.get(); } },
+  actions: { increment() { count.set(count.get() + 1); } }
+};</code></pre><aside>Behavior 内优先使用 ctx.subscribe 托管订阅。直接 subscribe 的释放仍归调用方负责；移除 DOM 不会自动释放未登记的独立订阅。</aside>
+</div>

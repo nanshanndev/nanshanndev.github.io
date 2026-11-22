@@ -1,0 +1,89 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, kbd { font-family: var(--mono); }
+.icon-button { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 7px; }
+.icon-button:hover { color: var(--accent); border-color: var(--accent); }
+.icon-button svg { width: 17px; height: 17px; }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+.search-dialog { width: min(640px, calc(100vw - 32px)); max-height: min(75vh, 700px); padding: 0; background: var(--surface); color: var(--text); border: 1px solid var(--strong-line); border-radius: 12px; box-shadow: 0 25px 100px #0005; margin: 15vh auto auto; }
+.search-dialog::backdrop { background: #08090c75; backdrop-filter: blur(5px); }
+.search-input-row { display: flex; align-items: center; gap: 12px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+.search-input-row svg { color: var(--accent); }
+.search-input-row input { width: 100%; border: 0; outline: 0; background: none; color: var(--ink); font-size: 16px; }
+.search-results { padding: 12px; max-height: 48vh; overflow: auto; }
+.search-result { display: block; border-radius: 7px; padding: 14px; }
+.search-result:hover, .search-result:focus { background: var(--accent-soft); }
+.search-result span { font-size: 11px; color: var(--accent); }
+.search-result strong { display: block; font-size: 16px; color: var(--ink); margin: 4px 0; }
+.search-result p { font-size: 13px; color: var(--muted); }
+.search-empty { padding: 34px 20px; text-align: center; color: var(--muted); font-size: 14px; }
+.search-footer { padding: 12px 22px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+@media (max-width: 767px) {
+  main { padding-top: 61px; }
+  .search-dialog { margin-top: 9vh; }
+  .search-input-row { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+</style>
+<!-- Feather 4.29.2 icons, Copyright (c) 2013-2023 Cole Bemis (MIT). See /licenses/feather-MIT.txt and /assets/feather-icons.json. -->
+
+<dialog class="search-dialog" aria-labelledby="search-title" ns-on-click="actions.backdrop" ns-on-keydown="actions.keydown">
+  <h2 id="search-title" class="sr-only">{{ state.t.searchLabel }}</h2>
+  <div class="search-input-row"><svg aria-hidden="true" class="" viewBox="0 0 24 24" data-feather="search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="search-query" type="search" ns-model="state.input.query" ns-bind-placeholder="state.t.searchHint" ns-bind-aria-label="state.t.searchLabel" ns-on-keydown="actions.enter" autocomplete="off"><button class="icon-button" type="button" ns-bind-aria-label="state.t.close" ns-on-click="actions.closeSearch"><svg aria-hidden="true" class="" viewBox="0 0 24 24" data-feather="x"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="search-results" aria-live="polite">
+    <a class="search-result" ns-foreach="item of state.results" ns-key="item.id" ns-bind-href="item.href"><span>{{ item.group }}</span><strong>{{ item.title }}</strong><p>{{ item.description }}</p></a>
+    <p class="search-empty" ns-if="state.empty">{{ state.t.searchEmpty }}</p>
+  </div>
+  <div class="search-footer">{{ state.t.searchFooter }}</div>
+</dialog>
+
+<script ns-behavior type="module">
+  import { createState, navigate } from 'nanshann';
+  import { documentItems, postItems } from 'site-content/catalog.js';
+  import { localized, localize, pageState } from 'site/util.js';
+  export default function search(ctx) {
+    const input = createState({ query: '' });
+    const results = () => {
+      const { locale } = pageState(ctx);
+      const items = [...documentItems(locale), ...postItems(locale)];
+      const query = input.query.trim().toLocaleLowerCase();
+      return query ? items.filter(item => `${item.title} ${item.description} ${item.keywords || ''}`.toLocaleLowerCase().includes(query)) : items.slice(0, 7);
+    };
+    const state = localize(ctx, base => ({ ...base, input, get results() { return results(); }, get empty() { return !results().length; } }));
+    let dialog;
+    ctx.onMount(host => { dialog = host.shadowRoot.querySelector('dialog'); });
+    ctx.onDispose(() => dialog?.close());
+    return { state, actions: {
+      openSearch() { input.query = ''; if (!dialog.open) dialog.showModal(); dialog.querySelector('input').focus(); },
+      closeSearch() { dialog.close(); },
+      keydown(event) { if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); dialog.close(); } },
+      backdrop(event) { if (event.target === dialog) { const bounds = dialog.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close(); } },
+      enter(event) { if (event.key === 'Enter' && results()[0]) { event.preventDefault(); dialog.close(); navigate(results()[0].href); } },
+    } };
+  }
+  search.attributes = localized;
+</script>

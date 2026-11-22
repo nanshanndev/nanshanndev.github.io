@@ -1,0 +1,66 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, kbd { font-family: var(--mono); }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+.copy { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; font: 11px/1.4 var(--mono); white-space: nowrap; }
+.copy svg { width: 13px; height: 13px; }
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+.prose { color: var(--text); max-width: 100%; font-size: 16px; line-height: 1.85; }
+.prose h2 { margin: 42px 0 18px; font-size: 25px; scroll-margin-top: 100px; }
+.prose h3 { margin: 30px 0 14px; font-size: 20px; }
+.prose p { margin: 16px 0; }
+.prose ul, .prose ol { padding-left: 24px; margin: 20px 0; }
+.prose li { margin: 8px 0; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+.prose code:not(pre code) { font-size: .85em; padding: 2px 5px; background: var(--soft); border-radius: 4px; color: var(--accent); overflow-wrap: anywhere; }
+.prose pre { padding: 22px; margin: 20px 0; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; font-size: 13px; line-height: 1.8; }
+.prose aside { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 22px; margin: 24px 0; font-size: 14px; }
+.prose table { width: 100%; border-collapse: collapse; margin-block: 24px; font-size: 14px; }
+.prose th, .prose td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); }
+.prose th { color: var(--ink); background: var(--soft); font-weight: 500; }
+.prose blockquote { margin: 24px 0; padding: 10px 24px; border-left: 3px solid var(--accent); color: var(--ink); font-size: 22px; }
+@media (max-width: 767px) {
+  main { padding-top: 61px; }
+  .prose { font-size: 15px; }
+  .prose pre { font-size: 12px; padding: 16px; }
+  .prose h2 { font-size: 23px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+<div class="prose">
+<p>组件由一份共享的 HTML、CSS 和可选 Behavior 定义。页面使用组件引用，内部实现留在定义中维护。</p><h2 id="entry-points">两种入口，同一协议</h2><div style="text-align:right"><button class="copy" type="button" data-copy="register-code">复制</button></div><pre><code id="register-code">import { createComponent } from 'nanshann';
+await createComponent('ui-counter', new URL('./counter.html', import.meta.url));</code></pre><div style="text-align:right"><button class="copy" type="button" data-copy="usage-code">复制</button></div><pre><code id="usage-code">&lt;ui-counter&gt;&lt;/ui-counter&gt;
+&lt;ns-include src="./counter.html"&gt;&lt;/ns-include&gt;</code></pre><p>标签名与 HTML 地址共用输入、事件、上下文、缓存与生命周期协议。每次引用拥有自己的宿主、ShadowRoot、局部状态与资源。</p><h2 id="inputs">公开输入与私有状态</h2><div style="text-align:right"><button class="copy" type="button" data-copy="fields-code">复制</button></div><pre><code id="fields-code">import { createState, property, attribute } from 'nanshann';
+
+export default function counter(ctx) {
+  const state = createState({ count: 0 });
+  return { state, actions: { increment() { state.count++; } } };
+}
+counter.properties = { label: property('Count', { reflect: true }) };
+counter.attributes = { disabled: attribute(false) };</code></pre><p>字段声明挂在 Behavior 函数对象上，在调用工厂之前即可读取。<code>property()</code> 接收 JavaScript 值；<code>attribute()</code> 提供字符串、布尔值或有限数字的转换。<code>reflect</code> 连接两侧入口，默认关闭。</p><p>模板用 <code>properties.label</code>、<code>attributes.disabled</code> 读取输入；Behavior 中通过 <code>ctx.properties.label.get()</code> 读取。外部对象按引用传入，组件只读消费，需要编辑时自行创建草稿。</p><h2 id="events">事件与内容组合</h2><p>通过原生 CustomEvent 输出交互。需要跨 Shadow DOM 冒泡时，设置 <code>bubbles: true</code> 与 <code>composed: true</code>。原生 slot 接收调用方内容，保留调用方的绑定与资源归属。</p><h2 id="actions">宿主公开动作</h2><div style="text-align:right"><button class="copy" type="button" data-copy="actions-code">复制</button></div><pre><code id="actions-code">const host = document.querySelector('ui-counter');
+await host.ready;
+host.increment();</code></pre><p>本地 Behavior 返回的 actions 发布为宿主方法；私有 state 不自动发布。每个组件最多一个顶层本地 Behavior，独立生命周期由子组件表达。</p><aside>入口 HTML 的普通 DOM 不扫描 ns-*。在框架加载的组件模板中使用绑定；直接操作入口宿主时使用 property、attribute 或 addEventListener。</aside>
+</div>

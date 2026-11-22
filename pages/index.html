@@ -1,0 +1,20 @@
+<style>
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); }
+.empty-state { box-sizing: border-box; width: min(100% - 40px, 800px); margin: 80px auto; padding: 60px 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); text-align: center; }
+h1 { color: var(--ink); font: 600 36px/1.25 var(--display); }
+a { color: var(--accent); text-underline-offset: 4px; }
+</style>
+<ns-include ns-if="state.home" src="/pages/home.html" ns-bind-locale="state.locale"></ns-include>
+<section ns-else class="empty-state"><span>404</span><h1>{{ state.title }}</h1><p>{{ state.description }}</p><a ns-bind-href="state.links.home">{{ state.t.home }}</a></section>
+<script ns-behavior type="module">
+  import { localized, localize, pageReady } from 'site/util.js';
+  export default function index(ctx) {
+    pageReady(ctx);
+    return { state: localize(ctx, base => ({ ...base,
+      home: ctx.route.pathname === '/' || ctx.route.pathname === '/index.html',
+      title: base.locale === 'zh' ? '页面未找到' : 'Page not found',
+      description: base.locale === 'zh' ? '这个地址没有对应的页面。' : 'There is no page at this address.',
+    })), actions: {} };
+  }
+  index.attributes = localized;
+</script>

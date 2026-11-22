@@ -1,0 +1,73 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, kbd { font-family: var(--mono); }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+.copy { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; font: 11px/1.4 var(--mono); white-space: nowrap; }
+.copy svg { width: 13px; height: 13px; }
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+.prose { color: var(--text); max-width: 100%; font-size: 16px; line-height: 1.85; }
+.prose h2 { margin: 42px 0 18px; font-size: 25px; scroll-margin-top: 100px; }
+.prose h3 { margin: 30px 0 14px; font-size: 20px; }
+.prose p { margin: 16px 0; }
+.prose ul, .prose ol { padding-left: 24px; margin: 20px 0; }
+.prose li { margin: 8px 0; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+.prose code:not(pre code) { font-size: .85em; padding: 2px 5px; background: var(--soft); border-radius: 4px; color: var(--accent); overflow-wrap: anywhere; }
+.prose pre { padding: 22px; margin: 20px 0; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; font-size: 13px; line-height: 1.8; }
+.prose aside { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 22px; margin: 24px 0; font-size: 14px; }
+.prose table { width: 100%; border-collapse: collapse; margin-block: 24px; font-size: 14px; }
+.prose th, .prose td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); }
+.prose th { color: var(--ink); background: var(--soft); font-weight: 500; }
+.prose blockquote { margin: 24px 0; padding: 10px 24px; border-left: 3px solid var(--accent); color: var(--ink); font-size: 22px; }
+@media (max-width: 767px) {
+  main { padding-top: 61px; }
+  .prose { font-size: 15px; }
+  .prose pre { font-size: 12px; padding: 16px; }
+  .prose h2 { font-size: 23px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+<div class="prose">
+<p>nanshann 使用标准 HTML、CSS 和 JavaScript ES Module。你只需要先准备框架发行文件，再用普通 HTTP 服务提供应用。</p><aside>框架包尚未发布到 npm。以下从源码仓库构建框架；这是发行准备，不是应用模板编译。源码开发要求 Node.js ≥ 22.12。</aside><h2 id="prepare">准备框架</h2><div style="text-align:right"><button class="copy" type="button" data-copy="prepare-code">复制</button></div><pre><code id="prepare-code">git clone https://github.com/nanshanndev/nanshann.git
+cd nanshann
+npm ci
+npm run build</code></pre><p>将整个 <code>dist/</code> 目录部署在站点 <code>/dist/</code>，保留其中的相对目录结构。不要只复制 index.js。</p><h2 id="entry">创建页面入口</h2><p>在应用目录创建 <code>index.html</code>。import map 需要出现在使用它的模块之前。</p><div style="text-align:right"><button class="copy" type="button" data-copy="entry-code">复制</button></div><pre><code id="entry-code">&lt;script type="importmap"&gt;
+  {"imports":{"nanshann":"/dist/index.js"}}
+&lt;/script&gt;
+&lt;script type="module"&gt;import 'nanshann';&lt;/script&gt;
+&lt;ns-include src="./counter.html"&gt;&lt;/ns-include&gt;</code></pre><h2 id="component">编写第一个组件</h2><p>在同一目录保存 <code>counter.html</code>。组件的 HTML 声明结构和绑定，CSS 管理样式，顶层 Behavior 创建该实例的状态。</p><div style="text-align:right"><button class="copy" type="button" data-copy="counter-code">复制</button></div><pre><code id="counter-code">&lt;style&gt;button { color: royalblue; }&lt;/style&gt;
+&lt;p&gt;\{{ state.count }}&lt;/p&gt;
+&lt;button type="button" ns-on-click="actions.increment"&gt;+1&lt;/button&gt;
+&lt;script ns-behavior type="module"&gt;
+  import { createState } from 'nanshann';
+  export default function counter() {
+    const state = createState({ count: 0 });
+    return { state, actions: {
+      increment() { state.count++; }
+    } };
+  }
+&lt;/script&gt;</code></pre><h2 id="run">在浏览器中运行</h2><p>通过 HTTP/HTTPS 打开入口，点击按钮，计数会更新。可以先运行仓库已有示例：</p><div style="text-align:right"><button class="copy" type="button" data-copy="run-code">复制</button></div><pre><code id="run-code">npm run dev</code></pre><p>再次引用同一份 counter.html，会创建另一个独立的计数器。无需手动 mount，也无需编译应用 HTML。</p><aside>应用需要 JavaScript、正确的静态资源 MIME 和允许 Blob 模块执行的 CSP。部署细节见 <a href="/docs/deployment.html?lang=zh">运行与部署</a>。</aside>
+</div>

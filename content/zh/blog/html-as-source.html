@@ -1,0 +1,52 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, kbd { font-family: var(--mono); }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+.prose { color: var(--text); max-width: 100%; font-size: 16px; line-height: 1.85; }
+.prose h2 { margin: 42px 0 18px; font-size: 25px; scroll-margin-top: 100px; }
+.prose h3 { margin: 30px 0 14px; font-size: 20px; }
+.prose p { margin: 16px 0; }
+.prose ul, .prose ol { padding-left: 24px; margin: 20px 0; }
+.prose li { margin: 8px 0; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+.prose code:not(pre code) { font-size: .85em; padding: 2px 5px; background: var(--soft); border-radius: 4px; color: var(--accent); overflow-wrap: anywhere; }
+.prose pre { padding: 22px; margin: 20px 0; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; font-size: 13px; line-height: 1.8; }
+.prose aside { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 22px; margin: 24px 0; font-size: 14px; }
+.prose table { width: 100%; border-collapse: collapse; margin-block: 24px; font-size: 14px; }
+.prose th, .prose td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); }
+.prose th { color: var(--ink); background: var(--soft); font-weight: 500; }
+.prose blockquote { margin: 24px 0; padding: 10px 24px; border-left: 3px solid var(--accent); color: var(--ink); font-size: 22px; }
+@media (max-width: 767px) {
+  main { padding-top: 61px; }
+  .prose { font-size: 15px; }
+  .prose pre { font-size: 12px; padding: 16px; }
+  .prose h2 { font-size: 23px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+<div class="prose">
+<p>界面经常存在于多个地方：设计稿描述外观，组件代码组织结构，业务代码保存数据与操作。当这些来源分别变化时，保持一致就变成额外的工作。</p><p>nanshann 选择 HTML 作为共同编辑来源。页面直接声明组件引用、公开输入与业务事件；组件定义维护内部结构、样式和局部交互。Agent 与未来的设计工具面对同一份内容。</p><h2 id="explicit">让依赖出现在使用位置</h2><p>一段清晰的 HTML 不只是“可读源码”。它还需要说明显示的数据来自哪里，交互触发哪个动作，组件对外开放什么输入。明确这些关系，才能让修改具有边界，也让验证有对象。</p><blockquote>共同来源的价值，在于让结构与关联持续可追溯。</blockquote><p>仅仅采用 HTML 并不自动证明 Agent 友好。状态、动作、依赖和资源所有权仍需要明确契约；长期效率也需要固定任务上的测量。</p><h2 id="shared">共享定义与页面配置</h2><p>页面搭建引用已有组件，调整排列、公开配置和业务绑定。内部 HTML、CSS 和 Behavior 的修改属于组件开发，直接维护共享定义。更新兼容的视觉实现时，已有业务关联应该继续有效。</p><p>这个边界避免通过展开组件源码、复制进每个页面来完成布局。组件资产保持关联，每个实例仍拥有自己的局部状态和资源。</p><h2 id="tools">创作工具是协作者</h2><p>未来的页面画布与组件编辑器可以编辑同一套文件，分别承担页面搭建与组件开发。应用运行不以它们为前提，也不依赖额外的设计转码结果。</p><aside>可视化编辑器和能力发现工具目前尚未实现。HTML 组件与绑定协议已经可以独立用于代码开发。</aside><p>接下来可以阅读 <a href="/docs/components.html?lang=zh">组件模型</a>，或打开 <a href="/ecosystem/shared-definition.html?lang=zh">共享定义示例</a>，直接观察两种入口如何使用同一组件。</p>
+</div>

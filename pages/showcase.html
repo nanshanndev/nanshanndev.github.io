@@ -1,0 +1,77 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, .eyebrow, .tag, kbd { font-family: var(--mono); }
+.wrap { width: min(100% - 64px, 1216px); margin-inline: auto; }
+.eyebrow { font-size: 12px; letter-spacing: .09em; color: var(--accent); text-transform: uppercase; line-height: 1.6; }
+.tag { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 5px; background: var(--accent-soft); color: var(--accent); font-size: 11px; padding: 3px 9px; white-space: nowrap; }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+.page-intro { padding: 82px 0 48px; max-width: 800px; }
+.page-intro h1 { margin: 15px 0 20px; }
+.page-intro p { font-size: 18px; line-height: 1.8; color: var(--muted); }
+.page-body { min-height: 60vh; padding-bottom: 90px; }
+.content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.content-card { display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; overflow: hidden; }
+.card-art { display: grid; place-content: center; height: 180px; background: linear-gradient(130deg, var(--accent-soft), var(--soft)); color: var(--accent); border-bottom: 1px solid var(--line); position: relative; font: 22px var(--mono); }
+.card-art::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
+.card-art span { position: relative; }
+.card-body { padding: 26px; flex: 1; display: flex; flex-direction: column; align-items: start; gap: 16px; }
+.card-body h2 { font-size: 22px; letter-spacing: -.02em; }
+.card-body p { font-size: 15px; color: var(--muted); }
+.card-body .text-link { margin-top: auto; }
+.text-link { color: var(--accent); font-size: 14px; display: inline-flex; gap: 8px; align-items: center; }
+.text-link svg { width: 16px; }
+@media (max-width: 1100px) {
+  .content-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 767px) {
+  .wrap { width: calc(100% - 40px); }
+  main { padding-top: 61px; }
+  .page-intro { padding: 48px 0 32px; }
+  .page-intro p { font-size: 16px; }
+  .content-grid { grid-template-columns: 1fr; }
+  .page-body { padding-bottom: 55px; }
+  .card-art { height: 160px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+<!-- Feather 4.29.2 icons, Copyright (c) 2013-2023 Cole Bemis (MIT). See /licenses/feather-MIT.txt and /assets/feather-icons.json. -->
+<div class="wrap page-body"><header class="page-intro"><span class="eyebrow">ECOSYSTEM / SHOWCASE</span><h1>{{ state.copy.showcaseTitle }}</h1><p>{{ state.copy.showcaseDescription }}</p></header><div class="content-grid"><article class="content-card" ns-foreach="item of state.items" ns-key="item.id"><div class="card-art"><span>{{ item.art }}</span></div><div class="card-body"><span class="tag">{{ state.copy.sampleTag }}</span><h2>{{ item.title }}</h2><p>{{ item.description }}</p><a class="text-link" ns-bind-href="item.href" ns-bind-target="item.target" rel="noopener noreferrer">{{ item.label }}<svg aria-hidden="true" viewBox="0 0 24 24" data-feather="arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div></article></div></div>
+<script ns-behavior type="module">
+  import { pageCopy, href } from 'site-content/catalog.js';
+  import { localized, localize, pageReady } from 'site/util.js';
+  export default function showcase(ctx) {
+    pageReady(ctx);
+    return { state: localize(ctx, base => {
+      const copy = pageCopy[base.locale];
+      return { ...base, copy, items: [
+        { id: 'counter', art: '42 + 1', title: copy.caseTitle, description: copy.caseDescription, href: href('/ecosystem/shared-definition.html', base.locale), label: copy.caseOpen, target: null },
+        { id: 'login', art: 'UI ↔ auth', title: copy.loginTitle, description: copy.loginDescription, href: `${base.repository}/tree/master/examples/login`, label: copy.exampleSource, target: '_blank' },
+        { id: 'menu', art: '<ui-menu>', title: copy.menuTitle, description: copy.menuDescription, href: `${base.repository}/tree/master/examples/menu-material`, label: copy.exampleSource, target: '_blank' },
+      ] };
+    }), actions: {} };
+  }
+  showcase.attributes = localized;
+</script>

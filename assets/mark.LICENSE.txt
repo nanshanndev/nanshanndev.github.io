@@ -1,0 +1,31 @@
+nanshann B1 Logo — Brand asset notice / 品牌资产说明
+
+Copyright (c) 2026 nanshann. All rights reserved.
+
+The B1 logo in mark.svg and ../favicon.ico is an original design by the project owner. It is
+excluded from the MIT license for the framework and website code. This
+notice also applies to reproductions of that logo in reference images.
+
+You may display the unmodified logo to identify or link to the nanshann
+project, including when reproducing this website as documentation of the
+project. Do not imply endorsement, affiliation, or ownership by nanshann.
+When reusing the website code for an unrelated project, replace this logo
+with your own branding. Other uses require permission from the rights
+holder, except where permitted by applicable law.
+
+The code license does not grant rights to use the nanshann name or logo as
+the branding of another product or service. This notice does not assert
+that any trademark has been registered.
+
+mark.svg 和 ../favicon.ico 中的 B1 标志由项目所有者原创设计，不适用框架和网站代码的 MIT
+许可。本说明也适用于参考图片中对该标志的复制。
+
+允许以未经修改的标志介绍或链接到 nanshann 项目，包括为介绍该项目而
+复制本网站。不得暗示 nanshann 对其他产品的背书、关联或所有权。将网站
+代码用于其他项目时，应替换为自己的品牌。其他使用须获得权利人许可，
+适用法律另有允许的除外。
+
+代码许可不授予将 nanshann 名称或标志用作其他产品或服务品牌的权利。
+本说明不表示任何商标已经注册。
+
+Project / 项目：https://github.com/nanshanndev/nanshann

@@ -1,0 +1,25 @@
+/* Document theme and inherited tokens. Component rules live in their HTML definitions. */
+:root {
+  color-scheme: light;
+  --bg: #f8fafc; --surface: #fff; --soft: #f1f5f9; --code: #fff; --ink: #090d16;
+  --text: #334155; --muted: #64748b; --line: #e2e8f0; --strong-line: #cbd5e1;
+  --accent: #2563eb; --accent-strong: #1d4ed8; --accent-soft: #eff6ff; --violet: #4f46e5;
+  --wash: rgba(37,99,235,.055); --grid: rgba(148,163,184,.26); --header: rgba(255,255,255,.88);
+  --shadow: 0 12px 36px -20px rgba(15,23,42,.2); --radius: 12px;
+  --font: 'Geist', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --display: 'Space Grotesk', 'Geist', 'PingFang SC', sans-serif;
+  --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #08090c; --surface: #0e1015; --soft: #111827; --code: #0e1015; --ink: #f8fafc;
+  --text: #cbd5e1; --muted: #94a3b8; --line: #202838; --strong-line: #334155;
+  --accent: #60a5fa; --accent-strong: #3b82f6; --accent-soft: #111b2f; --violet: #a5b4fc;
+  --wash: rgba(79,70,229,.15); --grid: rgba(51,65,85,.26); --header: rgba(8,9,12,.88);
+  --shadow: 0 12px 36px -20px rgba(0,0,0,.25);
+}
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+[hidden] { display: none !important; }
+.failure { margin: 20px; border: 1px solid #b91c1c; padding: 20px; background: var(--surface); color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

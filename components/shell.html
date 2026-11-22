@@ -1,0 +1,122 @@
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:host { display: block; color: var(--text); font: 16px/1.65 var(--font); -webkit-font-smoothing: antialiased; }
+:host, main, section, article, div { min-width: 0; }
+::selection { background: #2563eb30; color: var(--ink); }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: wait; opacity: .6; }
+button, a, input, summary { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+a:hover { color: var(--accent); }
+button, a { transition: background .18s, border-color .18s, color .18s, box-shadow .18s; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); letter-spacing: -.035em; line-height: 1.25; }
+h1 { font-size: clamp(36px, 4vw, 56px); font-weight: 700; }
+h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+svg { display: inline-block; width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+svg use { pointer-events: none; }
+code, pre, kbd { font-family: var(--mono); }
+.skip { position: fixed; top: -100px; left: 20px; z-index: 200; background: var(--surface); border: 1px solid var(--accent); padding: 10px 18px; }
+.skip:focus { top: 8px; }
+kbd { font-size: 10px; padding: 1px 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; }
+main { padding-top: 65px; min-height: 65vh; }
+pre { margin: 0; white-space: pre; overflow: auto; font-size: 12px; line-height: 1.9; tab-size: 2; }
+@media (max-width: 767px) {
+  main { padding-top: 61px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+
+<a class="skip" href="#main">{{ state.skip }}</a>
+<site-header ns-bind-locale="state.locale" ns-bind-current="state.current" ns-bind-theme="state.theme" ns-on-theme-change="actions.toggleTheme" ns-on-language-change="actions.changeLanguage" ns-on-search-open="actions.openSearch"></site-header>
+<main id="main" tabindex="-1" aria-busy="true" ns-on-search-open="actions.openSearch" ns-on-page-ready="actions.pageComplete">
+  <ns-route path="index.html" src="/pages/home.html" ns-bind-locale="state.locales.home_index"></ns-route>
+  <ns-route path="docs" src="/pages/docs.html" ns-bind-locale="state.locales.docs_getting_started" article="getting-started"></ns-route>
+  <ns-route path="docs/components.html" src="/pages/docs.html" ns-bind-locale="state.locales.docs_components" article="components"></ns-route>
+  <ns-route path="docs/behavior.html" src="/pages/docs.html" ns-bind-locale="state.locales.docs_behavior" article="behavior"></ns-route>
+  <ns-route path="docs/bindings.html" src="/pages/docs.html" ns-bind-locale="state.locales.docs_bindings" article="bindings"></ns-route>
+  <ns-route path="docs/state.html" src="/pages/docs.html" ns-bind-locale="state.locales.docs_state" article="state"></ns-route>
+  <ns-route path="docs/routing.html" src="/pages/docs.html" ns-bind-locale="state.locales.docs_routing" article="routing"></ns-route>
+  <ns-route path="docs/deployment.html" src="/pages/docs.html" ns-bind-locale="state.locales.docs_deployment" article="deployment"></ns-route>
+  <ns-route path="blog" src="/pages/blog.html" ns-bind-locale="state.locales.blog_index"></ns-route>
+  <ns-route path="blog/html-as-source.html" src="/pages/article.html" ns-bind-locale="state.locales.article_html_as_source" article="html-as-source"></ns-route>
+  <ns-route path="blog/boundaries.html" src="/pages/article.html" ns-bind-locale="state.locales.article_boundaries" article="boundaries"></ns-route>
+  <ns-route path="blog/browser-native.html" src="/pages/article.html" ns-bind-locale="state.locales.article_browser_native" article="browser-native"></ns-route>
+  <ns-route path="ecosystem/components.html" src="/pages/components.html" ns-bind-locale="state.locales.components_index"></ns-route>
+  <ns-route path="ecosystem/showcase.html" src="/pages/showcase.html" ns-bind-locale="state.locales.showcase_index"></ns-route>
+  <ns-route path="ecosystem/shared-definition.html" src="/pages/case.html" ns-bind-locale="state.locales.case_index"></ns-route>
+  <ns-route path="about" src="/pages/about.html" ns-bind-locale="state.locales.about_index"></ns-route>
+  <ns-route index src="/pages/index.html" ns-bind-locale="state.locales.fallback"></ns-route>
+</main>
+<site-footer ns-bind-locale="state.locale"></site-footer>
+<site-search ns-bind-locale="state.locale"></site-search>
+<script ns-behavior type="module">
+  import { createState, Signal } from 'nanshann';
+  import { common, docs, posts, homeCopy, pageCopy, entryPages } from 'site-content/catalog.js';
+  import { scrollToAnchor, attachCopy } from 'site/util.js';
+  export default function shell(ctx) {
+    const preferences = ctx.getBehavior('preferences');
+    const pathname = () => ctx.route.pathname.replace(/index\.html$/, '').replace(/\/$/, '') || '/';
+    const entry = () => entryPages.find(item => (('/' + item.file).replace(/index\.html$/, '').replace(/\/$/, '') || '/') === pathname());
+    const routeKey = entry => entry ? `${entry.page}_${entry.article || 'index'}`.replaceAll('-', '_') : 'fallback';
+    const locales = createState(Object.fromEntries([...entryPages.map(routeKey), 'fallback'].map(key => [key, preferences.state.locale])));
+    const state = {
+      locales,
+      get locale() { return preferences.state.locale; },
+      get skip() { return common[state.locale].skip; },
+      get current() { const page = entry()?.page; return page === 'article' ? 'blog' : page === 'case' ? 'showcase' : page || ''; },
+      get theme() { return preferences.state.theme; },
+    };
+    let host;
+    let lastPath;
+    ctx.onMount(element => {
+      host = element;
+      attachCopy(ctx, host.shadowRoot, () => state.locale);
+      ctx.subscribe(new Signal.Computed(() => JSON.stringify([ctx.route.pathname, ctx.route.search, ctx.route.hash])), () => {
+        preferences.actions.syncLanguage(ctx.route.search);
+        // Only the destination receives new inputs; the outgoing page keeps its locale until disposal.
+        locales[routeKey(entry())] = state.locale;
+        if (pathname() === '/') locales.fallback = state.locale;
+        document.documentElement.dataset.siteReady = 'false';
+        host.shadowRoot.querySelector('main').setAttribute('aria-busy', 'true');
+        document.getElementById('site-failure').hidden = true;
+        const { page, article } = entry() || {};
+        const locale = state.locale;
+        const articleCopy = (page === 'docs' ? docs : posts).find(item => item.id === article)?.[locale];
+        const key = { home: 'description', blog: 'blogDescription', components: 'componentsDescription', showcase: 'showcaseDescription', case: 'caseDescription', about: 'aboutDescription' }[page];
+        const description = page === 'docs' || page === 'article' ? articleCopy?.[1] : (page === 'home' ? homeCopy : pageCopy)[locale][key];
+        const title = page === 'docs' || page === 'article' ? articleCopy?.[0] : page === 'case' ? pageCopy[locale].caseTitle : page === 'home' ? `${homeCopy[locale].title} ${homeCopy[locale].titleAccent}` : common[locale][page];
+        document.title = `${title || (locale === 'zh' ? '页面未找到' : 'Page not found')} | nanshann`;
+        document.querySelector('meta[name="description"]').content = description || '';
+        host.shadowRoot.querySelector('site-header').closeMenu?.();
+        host.shadowRoot.querySelector('site-search').closeSearch?.();
+      });
+    });
+    return { state, actions: {
+      toggleTheme: preferences.actions.toggleTheme,
+      changeLanguage: preferences.actions.changeLanguage,
+      async openSearch() {
+        const search = host.shadowRoot.querySelector('site-search');
+        await customElements.whenDefined('site-search');
+        await search.ready;
+        if (host.isConnected) search.openSearch();
+      },
+      pageComplete(event) {
+        if (event.detail.url !== location.href) return;
+        if (document.documentElement.dataset.siteReady === 'true' && document.documentElement.dataset.renderedUrl === location.href) return;
+        document.documentElement.dataset.siteReady = 'true';
+        document.documentElement.dataset.renderedUrl = location.href;
+        host.shadowRoot.querySelector('main').setAttribute('aria-busy', 'false');
+        if (location.hash) scrollToAnchor({ behavior: lastPath === location.pathname ? 'auto' : 'instant' });
+        else if (lastPath !== location.pathname) window.scrollTo({ top: 0, behavior: 'instant' });
+        lastPath = location.pathname;
+      },
+    } };
+  }
+</script>

@@ -1,0 +1,62 @@
+nanshann website — Third-party notices / 第三方许可说明
+
+The framework and original website code/documentation are licensed under
+MIT. The following assets retain their own licenses and copyright notices.
+The original B1 logo is subject to its separate brand asset notice.
+
+框架及网站自有代码、文档采用 MIT。下列第三方资产仍适用各自的许可和
+版权声明；原创 B1 Logo 另见品牌资产说明。
+
+1. Project code / 项目代码 — MIT
+   License: ../runtime/LICENSE.txt
+   Copyright (c) 2026 nanshann
+
+2. Feather icons 4.29.2 — MIT
+   Copyright (c) 2013-2023 Cole Bemis
+   Source: https://github.com/feathericons/feather/tree/v4.29.2
+   Complete license: ./feather-MIT.txt
+   Source paths and Git blob IDs: ../assets/feather-icons.json
+   SVG geometry is embedded in component/page HTML and assets/icons.js.
+   The outer SVG wrapper, stroke width, color and size follow site styles.
+   The github icon is used only to link to the project repository.
+   GitHub names and marks remain the property of GitHub, Inc. The icon's
+   MIT license does not grant trademark rights or imply GitHub endorsement.
+   Brand guidance: https://brand.github.com/foundations/logo
+
+3. Geist and Geist Mono — SIL Open Font License 1.1
+   Copyright 2024 The Geist Project Authors
+   Source: https://github.com/google/fonts/tree/main/ofl/geist
+   Source: https://github.com/google/fonts/tree/main/ofl/geistmono
+   Upstream project: https://github.com/vercel/geist-font
+   Complete license: ../assets/fonts/geist-OFL.txt
+   Font versions: Geist 1.800; Geist Mono 1.701.
+
+4. Hanken Grotesk — SIL Open Font License 1.1
+   Copyright 2021 The Hanken Grotesk Project Authors
+   Source: https://github.com/google/fonts/tree/main/ofl/hankengrotesk
+   Upstream project: https://github.com/marcologous/hanken-grotesk
+   Complete license: ../assets/fonts/hankengrotesk-OFL.txt
+   Font version: 3.013.
+
+5. Space Grotesk — SIL Open Font License 1.1
+   Copyright 2020 The Space Grotesk Project Authors
+   Source: https://github.com/google/fonts/tree/main/ofl/spacegrotesk
+   Upstream project: https://github.com/floriankarsten/space-grotesk
+   Complete license: ../assets/fonts/spacegrotesk-OFL.txt
+   Font version: 2.000.
+
+Font binaries and their embedded notices are preserved. The font licenses
+apply to the font software, not to the surrounding website code or content.
+字体二进制及内嵌声明保留原样；字体许可不改变网站代码或内容的许可。
+
+6. nanshann B1 logo / 品牌资产
+   Assets: ../assets/mark.svg, ../favicon.ico
+   Separate terms: ../assets/mark.LICENSE.txt
+   Copyright (c) 2026 nanshann. Excluded from the code's MIT license.
+
+The published site does not include the reference designs, their external
+icon fonts, screenshots, or Tailwind CDN scripts.
+
+GitHub 图标仅用于链接项目仓库；其名称与标识仍归 GitHub, Inc.，图形的
+MIT 许可不授予商标权，也不表示 GitHub 的背书。发布产物不包含原设计稿、
+其中的外部图标字体、截图或 Tailwind CDN 脚本。
